@@ -543,9 +543,9 @@ def human_feedback_node(
     if new_plan.get("locale"):
         update_dict["locale"] = new_plan["locale"]
 
-    print("===============================================")
-    print('update_dict: ', update_dict)
-    print("===============================================")
+    # print("===============================================")
+    # print('update_dict: ', update_dict)
+    # print("===============================================")
     
     # ============================================================
     # 11. 최종 Command 반환
@@ -881,6 +881,7 @@ def coordinator_node(
 def reporter_node(state: State, config: RunnableConfig):
     """Reporter node that write a final report."""
     logger.info("Reporter write final report")
+    logger.debug(f"Locale: {state.get('locale', 'en-US')}")
     configurable = Configuration.from_runnable_config(config)
     current_plan = state.get("current_plan")
     input_ = {
@@ -977,9 +978,9 @@ async def _execute_agent_step(
     agent_input = {
         "messages": [
             HumanMessage(
-                content=f"# Research Topic\n\n{plan_title}\n\n{completed_steps_info}# Current Step\n\n## Title\n\n{current_step.title}\n\n## Description\n\n{current_step.description}\n\n## Locale\n\n{state.get('locale', 'en-US')}"
+                content=f"# Research Topic\n\n{plan_title}\n\n{completed_steps_info}# Current Step\n\n## Title\n\n{current_step.title}\n\n## Description\n\n{current_step.description}"
             )
-        ]
+        ],
     }
 
     # Add citation reminder for researcher agent
@@ -1163,6 +1164,7 @@ async def _setup_and_execute_agent_step(
             agent_type,
             pre_model_hook,
             interrupt_before_tools=configurable.interrupt_before_tools,
+            locale=state.get("locale", "en-US"),
         )
         return await _execute_agent_step(state, agent, agent_type)
     else:
@@ -1176,6 +1178,7 @@ async def _setup_and_execute_agent_step(
             agent_type,
             pre_model_hook,
             interrupt_before_tools=configurable.interrupt_before_tools,
+            locale=state.get("locale", "en-US"),
         )
         
         return await _execute_agent_step(state, agent, agent_type)
@@ -1214,7 +1217,7 @@ async def coder_node(
     """Coder node that do code analysis."""
     logger.info("Coder node is coding.")
     logger.debug(f"[coder_node] Starting coder agent with python_repl_tool")
-    
+
     return await _setup_and_execute_agent_step(
         state,
         config,
