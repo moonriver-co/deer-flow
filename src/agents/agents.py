@@ -22,6 +22,7 @@ def create_agent(
     prompt_template: str,
     pre_model_hook: callable = None,
     interrupt_before_tools: Optional[List[str]] = None,
+    locale: str = "en-US",
 ):
     """Factory function to create agents with consistent configuration.
 
@@ -61,15 +62,13 @@ def create_agent(
         )
     llm_type = AGENT_LLM_MAP.get(agent_type, "basic")
     logger.debug(f"Agent '{agent_name}' using LLM type: {llm_type}")
-    
     logger.debug(f"Creating ReAct agent '{agent_name}'")
+
     agent = create_react_agent(
         name=agent_name,
         model=get_llm_by_type(llm_type),
         tools=processed_tools,
-        prompt=lambda state: apply_prompt_template(
-            prompt_template, state, locale=state.get("locale", "en-US")
-        ),
+        prompt=lambda state: apply_prompt_template(prompt_template, state, locale=locale),
         pre_model_hook=pre_model_hook,
     )
     logger.info(f"Agent '{agent_name}' created successfully")
