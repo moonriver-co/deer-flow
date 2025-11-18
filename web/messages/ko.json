@@ -135,7 +135,10 @@
       "nowPlayingPodcast": "팟캐스트 재생 중...",
       "podcast": "팟캐스트",
       "errorGeneratingPodcast": "팟캐스트 생성 중 오류가 발생했습니다. 다시 시도해주세요.",
-      "downloadPodcast": "팟캐스트 다운로드"
+      "downloadPodcast": "팟캐스트 다운로드",
+      "greetings": ["좋아요", "좋습니다", "좋네요", "훌륭합니다", "완벽해요"],
+      "letsGetStarted": "시작하겠습니다.",
+      "letsStart": "시작해요."
     },
     "messages": {
       "replaying": "재생 중",

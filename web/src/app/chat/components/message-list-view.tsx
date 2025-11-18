@@ -342,7 +342,8 @@ function ThoughtBlock({
   // Split content into static (previous chunks) and streaming (current chunk)
   const chunks = contentChunks ?? [];
   const staticContent = chunks.slice(0, -1).join("");
-  const streamingChunk = isStreaming && chunks.length > 0 ? (chunks[chunks.length - 1] ?? "") : "";
+  const streamingChunk =
+    isStreaming && chunks.length > 0 ? (chunks[chunks.length - 1] ?? "") : "";
   const hasStreamingContent = isStreaming && streamingChunk.length > 0;
 
   return (
@@ -451,7 +452,6 @@ function ThoughtBlock({
   );
 }
 
-const GREETINGS = ["Cool", "Sounds great", "Looks good", "Great", "Awesome"];
 function PlanCard({
   className,
   message,
@@ -491,14 +491,16 @@ function PlanCard({
   const shouldShowPlan = hasMainContent;
   const handleAccept = useCallback(async () => {
     if (onSendMessage) {
-      onSendMessage(
-        `${GREETINGS[Math.floor(Math.random() * GREETINGS.length)]}! ${Math.random() > 0.5 ? "Let's get started." : "Let's start."}`,
-        {
-          interruptFeedback: "accepted",
-        },
-      );
+      const greetings = t.raw("greetings") as string[];
+      const randomGreeting =
+        greetings[Math.floor(Math.random() * greetings.length)];
+      const startMessage =
+        Math.random() > 0.5 ? t("letsGetStarted") : t("letsStart");
+      onSendMessage(`${randomGreeting}! ${startMessage}`, {
+        interruptFeedback: "accepted",
+      });
     }
-  }, [onSendMessage]);
+  }, [onSendMessage, t]);
   return (
     <div className={cn("w-full", className)}>
       {reasoningContent && (
@@ -528,20 +530,21 @@ function PlanCard({
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div style={{ wordBreak: 'break-all', whiteSpace: 'normal' }}>
+              <div style={{ wordBreak: "break-all", whiteSpace: "normal" }}>
                 <Markdown className="opacity-80" animated={false}>
                   {plan.thought}
                 </Markdown>
                 {plan.steps && (
                   <ul className="my-2 flex list-decimal flex-col gap-4 border-l-[2px] pl-8">
                     {plan.steps.map((step, i) => (
-                      <li key={`step-${i}`} style={{ wordBreak: 'break-all', whiteSpace: 'normal' }}>
+                      <li
+                        key={`step-${i}`}
+                        style={{ wordBreak: "break-all", whiteSpace: "normal" }}
+                      >
                         <div className="flex items-start gap-2">
                           <div className="flex-1">
                             <h3 className="mb flex items-center gap-2 text-lg font-medium">
-                              <Markdown animated={false}>
-                                {step.title}
-                              </Markdown>
+                              <Markdown animated={false}>{step.title}</Markdown>
                               {step.tools && step.tools.length > 0 && (
                                 <Tooltip
                                   title={`Uses ${step.tools.length} MCP tool${step.tools.length > 1 ? "s" : ""}`}
@@ -553,7 +556,13 @@ function PlanCard({
                                 </Tooltip>
                               )}
                             </h3>
-                            <div className="text-muted-foreground text-sm" style={{ wordBreak: 'break-all', whiteSpace: 'normal' }}>
+                            <div
+                              className="text-muted-foreground text-sm"
+                              style={{
+                                wordBreak: "break-all",
+                                whiteSpace: "normal",
+                              }}
+                            >
                               <Markdown animated={false}>
                                 {step.description}
                               </Markdown>
@@ -690,7 +699,7 @@ function ToolsDisplay({ tools }: { tools: string[] }) {
       {tools.map((tool, index) => (
         <span
           key={index}
-          className="rounded-md bg-muted px-2 py-1 text-xs font-mono text-muted-foreground"
+          className="bg-muted text-muted-foreground rounded-md px-2 py-1 font-mono text-xs"
         >
           {tool}
         </span>

@@ -135,7 +135,10 @@
       "nowPlayingPodcast": "Now playing podcast...",
       "podcast": "Podcast",
       "errorGeneratingPodcast": "Error when generating podcast. Please try again.",
-      "downloadPodcast": "Download podcast"
+      "downloadPodcast": "Download podcast",
+      "greetings": ["Cool", "Sounds great", "Looks good", "Great", "Awesome"],
+      "letsGetStarted": "Let's get started.",
+      "letsStart": "Let's start."
     },
     "messages": {
       "replaying": "Replaying",
